@@ -4,16 +4,25 @@ import { BiCollapse, BiLogoFacebook, BiLogoTwitter, BiCopyright } from "react-ic
 
 interface Props {
     children: JSX.Element[] | JSX.Element
-  }
+}
 
-function MainLayout({children}:Props) {
+function MainLayout({ children }: Props) {
     const theme = useTheme()
     const colorPrimary = theme.palette.primary.main
     return (
-        <Container maxWidth='xl'>
-            <Box sx={{ minHeight: '100vh' }}>
+        <Container
+            maxWidth='xl'
+            sx={{
+                pb: '1rem',
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+            }}
+        >
+            <Box>
                 {/* --------Header Start------- */}
-                <AppBar position="static" elevation={0} sx={{ background: 'transparent', mb: '5rem' }}>
+                <AppBar position="static" elevation={0} sx={{ background: 'transparent', mb: { xs: '2rem', sm: '5rem' } }}>
                     <Toolbar disableGutters={true}>
                         <BiCollapse size={36} style={{ marginRight: '0.5rem', color: `${colorPrimary}` }} />
                         <Typography color={'secondary'} variant="h6" component="div" sx={{ flexGrow: 1, }}>
@@ -23,26 +32,65 @@ function MainLayout({children}:Props) {
                     </Toolbar>
                 </AppBar>
                 {/* --------Header End------- */}
+
                 {children}
             </Box>
 
             {/* --------Footer Start------- */}
-            <Stack direction={'row'} gap={'0.75rem'} alignItems={'center'} sx={{ padding: '1rem 0' }}>
-                <BiCollapse size={36} style={{ color: `${colorPrimary}` }} />
-                <Typography color={'secondary'} variant="h6" component="div">
-                    Shortly
-                </Typography>
-                <Box sx={{ height: '2rem', width: '0.0625rem', background: '#fff' }} />
-                <Stack direction={'row'} gap={'0.125rem'} alignItems={'center'} sx={{ flexGrow: 1, }}>
+            <Box>
+                <Stack
+                    direction={'row'}
+                    gap={'0.75rem'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    sx={{
+                        padding: { xs: '0.5rem 0', sm: '1rem 0' },
+                    }}
+                >
+                    <BiCollapse size={36} style={{ color: `${colorPrimary}` }} />
+                    <Typography color={'secondary'} variant="h6" component="div">
+                        Shortly
+                    </Typography>
+                    <Box sx={{
+                        height: '2rem',
+                        width: '0.0625rem',
+                        background: '#fff',
+                        display: {
+                            xs: 'none',
+                            sm: 'block'
+                        }
+                    }}
+                    />
+                    <Stack
+                        direction={'row'}
+                        gap={'0.125rem'}
+                        alignItems={'center'}
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
+                        <BiCopyright size={14} />
+                        <Typography variant='body2'>
+                            2023 Shortly - <span style={{ color: `${colorPrimary}` }}>@arifur2023</span>
+                        </Typography>
+                    </Stack>
+                    <BiLogoFacebook size={22} />
+                    <BiLogoTwitter size={22} />
+                </Stack>
+
+                {/* For Mobile*/}
+                <Stack
+                    direction={'row'}
+                    gap={'0.125rem'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    sx={{ flexGrow: 1, display: { sm: 'none' } }}
+                >
                     <BiCopyright size={14} />
                     <Typography variant='body2'>
                         2023 Shortly - <span style={{ color: `${colorPrimary}` }}>@arifur2023</span>
                     </Typography>
                 </Stack>
-                <BiLogoFacebook size={22} />
-                <BiLogoTwitter size={22} />
-            </Stack>
+            </Box>
             {/* --------Footer End------- */}
+
         </Container>
     )
 }

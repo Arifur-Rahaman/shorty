@@ -1,4 +1,4 @@
-import { Typography, Container, Button, Grid, TextField, Box} from '@mui/material'
+import { Typography, Container, Button, Grid, TextField, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 // import { motion } from 'framer-motion';
 
@@ -6,12 +6,12 @@ function Home() {
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
   return (
-    <>
+    <Box>
       <Typography
         variant='h3'
         align='center'
         color={'primary'}
-        sx={{ fontWeight: '700', mb: '0.25rem', fontSize: '3.25rem' }}
+        sx={{ fontWeight: '700', mb: '0.5rem', fontSize: { xs: '2rem', sm: '3.25rem' } }}
       >
         Shorten your <span style={{ color: `${colorSecondary}` }}>loooooong</span> URLs <br /> like never before!
       </Typography>
@@ -30,7 +30,7 @@ function Home() {
       </Typography>
       <Container maxWidth='sm' sx={{ mb: '5rem' }}>
         <Grid container spacing={2} alignItems={'center'}>
-          <Grid item flex={1}>
+          <Grid item xs={12} sm={8} md={8}>
             <TextField
               variant="outlined"
               fullWidth
@@ -50,8 +50,9 @@ function Home() {
               placeholder='Enter url here'
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={4} md={4}>
             <Button
+              fullWidth
               variant='contained'
               color={'primary'}
               size='large'
@@ -72,7 +73,7 @@ function Home() {
           Click Me!
         </motion.a> */}
       </Container>
-      <Box>
+      <Box sx={{ mb: '2rem' }}>
         <Typography
           variant='h4'
           align='center'
@@ -94,11 +95,11 @@ function Home() {
         >
           Here are your recent shortened URLs! Now click navigate and enjoy shortly
         </Typography>
+        {/* <Typography textAlign={'center'}>www.facebook.com</Typography>
         <Typography textAlign={'center'}>www.facebook.com</Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography>
+        <Typography textAlign={'center'}>www.facebook.com</Typography> */}
       </Box>
-    </ >
+    </Box>
   )
 }
 
