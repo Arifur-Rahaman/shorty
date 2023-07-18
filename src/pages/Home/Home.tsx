@@ -95,9 +95,9 @@ function Home() {
         >
           Here are your recent shortened URLs! Now click navigate and enjoy shortly
         </Typography>
-        {/* <Typography textAlign={'center'}>www.facebook.com</Typography>
         <Typography textAlign={'center'}>www.facebook.com</Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography> */}
+        <Typography textAlign={'center'}>www.facebook.com</Typography>
+        <Typography textAlign={'center'}>www.facebook.com</Typography>
       </Box>
     </Box>
   )

@@ -1,12 +1,14 @@
 import { Typography, Container, AppBar, Toolbar, Button, Box, Stack } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { BiCollapse, BiLogoFacebook, BiLogoTwitter, BiCopyright } from "react-icons/bi";
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     children: JSX.Element[] | JSX.Element
 }
 
 function MainLayout({ children }: Props) {
+    const navigate = useNavigate()
     const theme = useTheme()
     const colorPrimary = theme.palette.primary.main
     return (
@@ -28,7 +30,12 @@ function MainLayout({ children }: Props) {
                         <Typography color={'secondary'} variant="h6" component="div" sx={{ flexGrow: 1, }}>
                             Shortly
                         </Typography>
-                        <Button color="secondary">All links</Button>
+                        <Button
+                            onClick={()=>navigate('/urls')}
+                            color="secondary"
+                        >
+                            All links
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 {/* --------Header End------- */}
