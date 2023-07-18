@@ -1,10 +1,25 @@
 import { Typography, Container, Button, Grid, TextField, Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
+import useLocalStroge from '../../hooks/useLocalStorage';
+import { useState } from 'react';
 // import { motion } from 'framer-motion';
 
 function Home() {
+  const [locatStore, setLocalStore] = useLocalStroge('urls', [])
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
+  const [urlText, setUrlText] = useState('')
+
+  const handleOnchange = (e:any)=>{
+    setUrlText(e.target.value)
+  }
+
+  const shortenUrl = ()=>{
+    setLocalStore([{url: urlText} ,...locatStore])
+  }
+
+  console.log(locatStore)
+
   return (
     <Box>
       <Typography
@@ -32,6 +47,7 @@ function Home() {
         <Grid container spacing={2} alignItems={'center'}>
           <Grid item xs={12} sm={8} md={8}>
             <TextField
+              onChange={handleOnchange}
               variant="outlined"
               fullWidth
               sx={{
@@ -52,6 +68,7 @@ function Home() {
           </Grid>
           <Grid item xs={12} sm={4} md={4}>
             <Button
+              onClick={shortenUrl}
               fullWidth
               variant='contained'
               color={'primary'}
