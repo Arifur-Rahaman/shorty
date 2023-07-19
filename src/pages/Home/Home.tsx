@@ -1,24 +1,86 @@
-import { Typography, Container, Button, Grid, TextField, Box } from '@mui/material'
+import { Typography, Container, Button, Grid, TextField, Box, Snackbar, Alert } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import useLocalStroge from '../../hooks/useLocalStorage';
 import { useState } from 'react';
+import { nanoid } from 'nanoid'
+
 // import { motion } from 'framer-motion';
 
+interface ISnackBarData {
+  open: boolean
+  severity: 'error' | 'success' | 'warning',
+  message: string
+}
+
+
 function Home() {
+  const [urlText, setUrlText] = useState('')
+  const [snackBarData, setSnackBarData] = useState<ISnackBarData>({
+    open: false,
+    severity: 'error',
+    message: ''
+  })
   const [locatStore, setLocalStore] = useLocalStroge('urls', [])
+
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
-  const [urlText, setUrlText] = useState('')
 
-  const handleOnchange = (e:any)=>{
+  const handleOnchange = (e: any) => {
     setUrlText(e.target.value)
   }
 
-  const shortenUrl = ()=>{
-    setLocalStore([{url: urlText} ,...locatStore])
+  /*Check url valid or not */
+  const isUrlValid = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
-  console.log(locatStore)
+  /*Check url already existance of long url*/
+  const isUrlAlreadyExist = (store: [], url: string) => {
+    const founded = store.find(({ originalUrl }) => originalUrl === url)
+    if (founded) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  /*Short url and set to the store*/
+  const shortenUrl = () => {
+
+    if (!isUrlValid(urlText)) {
+      setSnackBarData({ open: true, severity: 'error', message: 'URL is not valid!' })
+      return
+    }
+
+    if (isUrlAlreadyExist(locatStore, urlText)) {
+      setUrlText('')
+      setSnackBarData({ open: true, severity: 'warning', message: 'Already added!'})
+      return
+    }
+
+    const newNanoId = nanoid(6)
+    const newElement = {
+      id: newNanoId,
+      originalUrl: urlText,
+      shortUrl: `shortly.com/${newNanoId}`,
+      clicked: 0,
+      createdAt: new Date()
+    }
+    setLocalStore([newElement, ...locatStore])
+    setUrlText('')
+    setSnackBarData({ open: true, severity: 'success', message: 'Shorten url added!' })
+  }
+
+  /*Handle manual snackbar close*/
+  const handleClose = () => {
+    setSnackBarData((prev) => ({ ...prev, open: false }))
+  }
 
   return (
     <Box>
@@ -50,6 +112,7 @@ function Home() {
               onChange={handleOnchange}
               variant="outlined"
               fullWidth
+              value={urlText}
               sx={{
                 "& .MuiInputBase-root": {
                   color: '#d8dbdf'
@@ -116,6 +179,24 @@ function Home() {
         <Typography textAlign={'center'}>www.facebook.com</Typography>
         <Typography textAlign={'center'}>www.facebook.com</Typography>
       </Box>
+      <Snackbar
+        open={snackBarData?.open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}>
+        <Alert
+          onClose={handleClose}
+          severity={snackBarData.severity}
+          variant="filled"
+          elevation={6}
+          sx={{ width: '100%' }}
+        >
+          {snackBarData?.message}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }
