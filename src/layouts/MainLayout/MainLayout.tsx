@@ -1,7 +1,7 @@
 import { Typography, Container, AppBar, Toolbar, Button, Box, Stack } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { BiCollapse, BiLogoFacebook, BiLogoTwitter, BiCopyright } from "react-icons/bi";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Props {
     children: JSX.Element[] | JSX.Element
@@ -25,13 +25,23 @@ function MainLayout({ children }: Props) {
             <Box>
                 {/* --------Header Start------- */}
                 <AppBar position="static" elevation={0} sx={{ background: 'transparent', mb: { xs: '2rem', sm: '5rem' } }}>
-                    <Toolbar disableGutters={true}>
-                        <BiCollapse size={36} style={{ marginRight: '0.5rem', color: `${colorPrimary}` }} />
-                        <Typography color={'secondary'} variant="h6" component="div" sx={{ flexGrow: 1, }}>
-                            Shortly
-                        </Typography>
+                    <Toolbar disableGutters={true} sx={{gap:'2rem'}}>
+                        <Link to={'/'} style={{textDecoration:'none', flexGrow:1 }}>
+                            <Stack direction={'row'} alignItems={'center'}>
+                                <BiCollapse size={36} style={{ marginRight: '0.5rem', color: `${colorPrimary}` }} />
+                                <Typography color={'secondary'} variant="h6" component="div">
+                                    Shortly
+                                </Typography>
+                            </Stack>
+                        </Link>
                         <Button
-                            onClick={()=>navigate('/urls')}
+                            onClick={() => navigate('/')}
+                            color="secondary"
+                        >
+                            Home
+                        </Button>
+                        <Button
+                            onClick={() => navigate('/urls')}
                             color="secondary"
                         >
                             All links

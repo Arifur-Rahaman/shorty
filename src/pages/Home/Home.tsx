@@ -1,8 +1,10 @@
-import { Typography, Container, Button, Grid, TextField, Box, Snackbar, Alert } from '@mui/material'
+import { Typography, Container, Button, Grid, TextField, Box, Snackbar, Alert, Stack } from '@mui/material'
+import { GoLinkExternal } from "react-icons/go";
 import { useTheme } from '@mui/material/styles';
 import useLocalStroge from '../../hooks/useLocalStorage';
 import { useState } from 'react';
 import { nanoid } from 'nanoid'
+import moment from 'moment';
 
 // import { motion } from 'framer-motion';
 
@@ -20,11 +22,10 @@ function Home() {
     severity: 'error',
     message: ''
   })
-  const [locatStore, setLocalStore] = useLocalStroge('urls', [])
+  const [localStore, setLocalStore] = useLocalStroge('urls', [])
 
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
-
   const handleOnchange = (e: any) => {
     setUrlText(e.target.value)
   }
@@ -39,7 +40,7 @@ function Home() {
     }
   }
 
-  /*Check url already existance of long url*/
+  /*Check if long url already exist or not*/
   const isUrlAlreadyExist = (store: [], url: string) => {
     const founded = store.find(({ originalUrl }) => originalUrl === url)
     if (founded) {
@@ -58,9 +59,9 @@ function Home() {
       return
     }
 
-    if (isUrlAlreadyExist(locatStore, urlText)) {
+    if (isUrlAlreadyExist(localStore, urlText)) {
       setUrlText('')
-      setSnackBarData({ open: true, severity: 'warning', message: 'Already added!'})
+      setSnackBarData({ open: true, severity: 'warning', message: 'Already added!' })
       return
     }
 
@@ -70,16 +71,32 @@ function Home() {
       originalUrl: urlText,
       shortUrl: `shortly.com/${newNanoId}`,
       clicked: 0,
-      createdAt: new Date()
+      createdAt: moment()
     }
-    setLocalStore([newElement, ...locatStore])
+    setLocalStore([newElement, ...localStore])
     setUrlText('')
     setSnackBarData({ open: true, severity: 'success', message: 'Shorten url added!' })
   }
 
-  /*Handle manual snackbar close*/
+  /*Handle snackbar close manually*/
   const handleClose = () => {
     setSnackBarData((prev) => ({ ...prev, open: false }))
+  }
+
+  /*Find recent URLs*/
+  const findRecentUrl = (store: []) => {
+    if (store.length > 3) {
+      return store.slice(0, 3)
+    }
+    else {
+      return store
+    }
+  }
+
+  /*Handle click on open url */
+  const handleOpenUrl = (url: string, id: string)=>{
+    setLocalStore(localStore.map((element:any)=>element.id === id?{...element, clicked: element.clicked+1}: element))
+    window.open(url, "_blank")
   }
 
   return (
@@ -170,14 +187,30 @@ function Home() {
             display: 'block',
             fontWeight: 400,
             fontSize: '0.85rem',
-            mb: '1rem'
+            mb: '1.5rem'
           }}
         >
-          Here are your recent shortened URLs! Now click navigate and enjoy shortly
+          Here are your <span style={{ color: `${colorSecondary}`, fontWeight: '600' }}>recent shortened URLs!</span> Now click navigate and enjoy shortly
         </Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography>
-        <Typography textAlign={'center'}>www.facebook.com</Typography>
+        {
+          findRecentUrl(localStore).map(({ shortUrl, originalUrl, id }) => (
+            <Stack
+              key={id}
+              direction={'row'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              gap={'0.5rem'}
+              sx={{ width: 'content-fit', mb: '0.75rem' }}
+            >
+              <Typography variant='body2' align='center'>{shortUrl}</Typography>
+              <GoLinkExternal
+                size={12}
+                style={{ cursor: 'pointer', color: `${colorSecondary}` }}
+                onClick={()=>handleOpenUrl(originalUrl, id)}
+              />
+            </Stack>
+          ))
+        }
       </Box>
       <Snackbar
         open={snackBarData?.open}
