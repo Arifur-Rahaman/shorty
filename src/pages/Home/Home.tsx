@@ -6,47 +6,29 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid'
 import moment from 'moment';
 import {toast} from 'react-toastify'
+import { isUrlAlreadyAdded, isUrlValid } from '../../utils/url';
 
 function Home() {
   const [urlText, setUrlText] = useState('')
   const [localStore, setLocalStore] = useLocalStroge('urls', [])
-
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
+
   const handleOnchange = (e: any) => {
     setUrlText(e.target.value)
   }
 
-  /*Check url valid or not */
-  const isUrlValid = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
-  /*Check if long url already exist or not*/
-  const isUrlAlreadyExist = (store: [], url: string) => {
-    const founded = store.find(({ originalUrl }) => originalUrl === url)
-    if (founded) {
-      return true
-    }
-    else {
-      return false
-    }
-  }
-
   /*Short url and set to the store*/
   const shortenUrl = () => {
-
+    
+    /*Check if url valid or not*/
     if (!isUrlValid(urlText)) {
       toast.error('URL is not valid!')
       return
     }
 
-    if (isUrlAlreadyExist(localStore, urlText)) {
+    /*Check if url already added or not*/
+    if (isUrlAlreadyAdded(urlText, localStore)) {
       setUrlText('')
       toast.warning('Already added!')
       return
