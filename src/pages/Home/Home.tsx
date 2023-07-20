@@ -1,27 +1,14 @@
-import { Typography, Container, Button, Grid, TextField, Box, Snackbar, Alert, Stack } from '@mui/material'
+import { Typography, Container, Button, Grid, TextField, Box, Stack } from '@mui/material'
 import { GoLinkExternal } from "react-icons/go";
 import { useTheme } from '@mui/material/styles';
 import useLocalStroge from '../../hooks/useLocalStorage';
 import { useState } from 'react';
 import { nanoid } from 'nanoid'
 import moment from 'moment';
-
-// import { motion } from 'framer-motion';
-
-interface ISnackBarData {
-  open: boolean
-  severity: 'error' | 'success' | 'warning',
-  message: string
-}
-
+import {toast} from 'react-toastify'
 
 function Home() {
   const [urlText, setUrlText] = useState('')
-  const [snackBarData, setSnackBarData] = useState<ISnackBarData>({
-    open: false,
-    severity: 'error',
-    message: ''
-  })
   const [localStore, setLocalStore] = useLocalStroge('urls', [])
 
   const theme = useTheme()
@@ -55,13 +42,13 @@ function Home() {
   const shortenUrl = () => {
 
     if (!isUrlValid(urlText)) {
-      setSnackBarData({ open: true, severity: 'error', message: 'URL is not valid!' })
+      toast.error('URL is not valid!')
       return
     }
 
     if (isUrlAlreadyExist(localStore, urlText)) {
       setUrlText('')
-      setSnackBarData({ open: true, severity: 'warning', message: 'Already added!' })
+      toast.warning('Already added!')
       return
     }
 
@@ -75,13 +62,9 @@ function Home() {
     }
     setLocalStore([newElement, ...localStore])
     setUrlText('')
-    setSnackBarData({ open: true, severity: 'success', message: 'Shorten url added!' })
+    toast.success('Shorted url added!')
   }
 
-  /*Handle snackbar close manually*/
-  const handleClose = () => {
-    setSnackBarData((prev) => ({ ...prev, open: false }))
-  }
 
   /*Find recent URLs*/
   const findRecentUrl = (store: []) => {
@@ -159,16 +142,6 @@ function Home() {
             </Button>
           </Grid>
         </Grid>
-        {/* <motion.a
-          href="https://example.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            animation: 'blinking 1s infinite',
-          }}
-        >
-          Click Me!
-        </motion.a> */}
       </Container>
       <Box sx={{ mb: '2rem' }}>
         <Typography
@@ -212,24 +185,6 @@ function Home() {
           ))
         }
       </Box>
-      <Snackbar
-        open={snackBarData?.open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center"
-        }}>
-        <Alert
-          onClose={handleClose}
-          severity={snackBarData.severity}
-          variant="filled"
-          elevation={6}
-          sx={{ width: '100%' }}
-        >
-          {snackBarData?.message}
-        </Alert>
-      </Snackbar>
     </Box>
   )
 }

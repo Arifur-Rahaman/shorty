@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Container, Grid, Typography, Snackbar, Alert } from "@mui/material"
+import { Button, Container, Grid, Typography } from "@mui/material"
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,10 +10,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from "react-router-dom"
 import useLocalStroge from "../../hooks/useLocalStorage"
 import moment from "moment"
+import { toast } from 'react-toastify';
 function UrlItem() {
     const [store, setStore] = useLocalStroge('urls', [])
     const [isOpenDialog, setIsOpenDialog] = useState(false)
-    const [isSnackBarOpen, setIsSnackBarOpen] = useState(false)
     const navigate = useNavigate()
     const { id: currentId } = useParams()
     const current = store.find((element: any) => element.id === currentId)
@@ -29,14 +29,10 @@ function UrlItem() {
     /*Handle delete url*/
     const handleDelete = () => {
         setStore([...store].filter((element: any) => element.id !== currentId))
-        setIsSnackBarOpen(true)
+        toast.success('Deleted Successfully!')
         handleCloseDialog()
         navigate('/urls')
-        
-    }
 
-    const handleSnackBarClose = ()=>{
-        setIsSnackBarOpen(false)
     }
 
     return (
@@ -114,25 +110,6 @@ function UrlItem() {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar
-                open={isSnackBarOpen}
-                autoHideDuration={2000}
-                onClose={handleSnackBarClose}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "center"
-                }}>
-                <Alert
-                    onClose={handleSnackBarClose}
-                    severity='error'
-                    variant="filled"
-                    elevation={6}
-                    sx={{ width: '100%' }}
-                >
-                    {'Deleted Successfully'}
-                </Alert>
-            </Snackbar>
         </Container>
     )
 }
