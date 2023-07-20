@@ -5,12 +5,21 @@ import useLocalStroge from '../../hooks/useLocalStorage';
 import { useState } from 'react';
 import { nanoid } from 'nanoid'
 import moment from 'moment';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { isUrlAlreadyAdded, isUrlValid } from '../../utils/url';
+
+interface INewUrl {
+  originalUrl: string
+  shortUrl: string
+  clicked: number
+  id: string
+  createdAt: any
+}
 
 function Home() {
   const [urlText, setUrlText] = useState('')
   const [localStore, setLocalStore] = useLocalStroge('urls', [])
+  const [newUrl, setNewUrl] = useState<null | INewUrl>(null)
   const theme = useTheme()
   const colorSecondary = theme.palette.secondary.main
 
@@ -20,7 +29,7 @@ function Home() {
 
   /*Short url and set to the store*/
   const shortenUrl = () => {
-    
+
     /*Check if url valid or not*/
     if (!isUrlValid(urlText)) {
       toast.error('URL is not valid!')
@@ -43,6 +52,7 @@ function Home() {
       createdAt: moment()
     }
     setLocalStore([newElement, ...localStore])
+    setNewUrl(newElement)
     setUrlText('')
     toast.success('Shorted url added!')
   }
@@ -59,8 +69,8 @@ function Home() {
   }
 
   /*Handle click on open url */
-  const handleOpenUrl = (url: string, id: string)=>{
-    setLocalStore(localStore.map((element:any)=>element.id === id?{...element, clicked: element.clicked+1}: element))
+  const handleOpenUrl = (url: string, id: string) => {
+    setLocalStore(localStore.map((element: any) => element.id === id ? { ...element, clicked: element.clicked + 1 } : element))
     window.open(url, "_blank")
   }
 
@@ -87,7 +97,7 @@ function Home() {
       >
         Copy your long boring url. Paste it below. Then you got it, right?
       </Typography>
-      <Container maxWidth='sm' sx={{ mb: '5rem' }}>
+      <Container maxWidth='sm' sx={{ mb: '1rem' }}>
         <Grid container spacing={2} alignItems={'center'}>
           <Grid item xs={12} sm={8} md={8}>
             <TextField
@@ -125,6 +135,26 @@ function Home() {
           </Grid>
         </Grid>
       </Container>
+
+      <Box sx={{ mb: '5rem' }}>
+        {
+          newUrl && <Stack
+            direction={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            gap={'0.5rem'}
+            sx={{ width: 'content-fit' }}
+          >
+            <Typography variant='body2' align='center'>{newUrl.shortUrl}</Typography>
+            <GoLinkExternal
+              size={12}
+              style={{ cursor: 'pointer', color: `${colorSecondary}` }}
+              onClick={() => handleOpenUrl(newUrl.originalUrl, newUrl.id)}
+            />
+          </Stack>
+        }
+      </Box>
+
       <Box sx={{ mb: '2rem' }}>
         <Typography
           variant='h4'
@@ -161,7 +191,7 @@ function Home() {
               <GoLinkExternal
                 size={12}
                 style={{ cursor: 'pointer', color: `${colorSecondary}` }}
-                onClick={()=>handleOpenUrl(originalUrl, id)}
+                onClick={() => handleOpenUrl(originalUrl, id)}
               />
             </Stack>
           ))

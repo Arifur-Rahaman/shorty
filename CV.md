@@ -1,2 +1,2 @@
-Please click the URL to open the cv
+Please click on the link to open the CV
 [https://drive.google.com/file/d/1CU-cqZDax3HGpG9tIpMIBKfIi3EnpM-a/view?usp=sharing](https://drive.google.com/file/d/1CU-cqZDax3HGpG9tIpMIBKfIi3EnpM-a/view?usp=sharing)

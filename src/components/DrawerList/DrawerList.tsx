@@ -28,7 +28,6 @@ const DrawerList = ({ setOpen }: Props) => {
                 setSelectedItem(1)
                 break;
             default:
-                // setSelectedItem(0)
                 break;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
