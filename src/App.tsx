@@ -1,6 +1,6 @@
 import MainLayout from "./layouts/MainLayout/MainLayout"
 import Home from "./pages/Home/Home"
-import {Routes , Route} from 'react-router-dom'
+import {Routes , Route, Navigate} from 'react-router-dom'
 import UrlList from "./pages/UrlList/UrlList"
 import UrlItem from "./pages/UrlItem/UrlItem"
 import { ToastContainer} from 'react-toastify';
@@ -12,6 +12,8 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/urls" element={<UrlList/>}/>
         <Route path="/urls/:id" element={<UrlItem/>}/>
+        <Route path="*" element={<Navigate to={'/'}/>}/>
+
       </Routes>
       <ToastContainer position="top-center" autoClose={2000} />
     </MainLayout>

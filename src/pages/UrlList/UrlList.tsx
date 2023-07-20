@@ -134,6 +134,9 @@ function UrlList() {
           ))}
         </TableBody>
       </Table>
+      {
+        store.length===0 && <Typography align='center' sx={{m:'4rem 0'}}>Not data found!</Typography>
+      }
     </TableContainer>
   )
 }

@@ -21,7 +21,7 @@ function UrlItem() {
     const [isInEditMode, setIsInEditMode] = useState(false)
     const { id: currentId } = useParams()
     const current = store.find((element: any) => element.id === currentId)
-    const [longUrl, setLongUrl] = useState(current.originalUrl)
+    const [longUrl, setLongUrl] = useState(current?.originalUrl)
     const navigate = useNavigate()
     const theme = useTheme()
     const colorSecondary = theme.palette.secondary.main
@@ -77,125 +77,133 @@ function UrlItem() {
                 transform: { sm: 'translate(-50%, -50%)' },
             }}
         >
-            <Typography variant='h5'
-                sx={{ mb: '0.5rem', fontWeight: '600' }}
-                align='center'
-                color={'primary'}
-            >
-                Update <span style={{ color: `${colorSecondary}` }}>OR</span> Delete
-            </Typography>
-            <Typography
-                align='center'
-                sx={{ mb: '2rem' }}
-                variant='body2'
-            >
-                Your url is not working!<br />Feel free to update as you want
-            </Typography>
-            <Grid container rowGap={'1rem'}
-                sx={{
-                    borderRadius: { sm: '4px' },
-                    p: { xs: '1rem', sm: '2rem' },
-                    background: '#1f2936'
-                }}
-            >
-                <Grid item xs={12}>
-                    <Stack direction={'row'} alignItems={'center'} gap={'0.5rem'}>
-                        <Typography>{current?.shortUrl}</Typography>
-                        <GoLinkExternal
-                            size={14}
-                            style={{ cursor: 'pointer', color: `${colorSecondary}` }}
-                            onClick={() => handleOpenUrl(current.originalUrl, currentId)}
-                        />
-                    </Stack>
-                </Grid>
-                <Grid item xs={12}>
-                    {
-                        isInEditMode ? (
-                            <TextField
-                                autoFocus
-                                value={longUrl}
-                                fullWidth
-                                variant='standard'
-                                onChange={handleUrlChange}
-                                sx={{
-                                    "& .MuiInputBase-root": {
-                                        color: '#d8dbdf'
-                                    },
-                                    '&:focus-within fieldset, &:focus-visible fieldset': {
-                                        border: 'none !important',
-                                    },
-                                    // background: '#374150',
-                                    borderRadius: '8px'
-                                }}
-                                inputProps={{
-                                    autoComplete: 'off',
-                                }}
-                            />
-                        ) : (
-                            <Typography
-                                variant="body2"
-                                sx={{
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    display: '-webkit-box',
-                                    WebkitLineClamp: '2',
-                                    WebkitBoxOrient: 'vertical',
-                                }}
-                            >{current?.originalUrl}
-                            </Typography>
-                        )
-                    }
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="body2">{current?.clicked} times clicked</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="body2">Created At:<br /> {moment(current?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    {
-                        isInEditMode ? (
-                            <Box>
-                                <Button
-                                    color="secondary"
-                                    variant="contained"
-                                    sx={{ mr: '1rem' }}
-                                    onClick={updateUrl}
-                                >
-                                    Save
-                                </Button>
-                                <Button
-                                    color="error"
-                                    variant="contained"
-                                    onClick={() => setIsInEditMode(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </Box>
-                        ) : (
-                            <Box>
-                                <Button
-                                    endIcon={<EditIcon fontSize="small" />}
-                                    color="secondary"
-                                    variant="contained"
-                                    sx={{ mr: '1rem' }}
-                                    onClick={() => setIsInEditMode(true)}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    color="error"
-                                    variant="contained"
-                                    endIcon={<DeleteIcon />}
-                                    onClick={handleOpenDialog}
-                                >
-                                    Delete
-                                </Button>
-                            </Box>
-                        )
-                    }
-                </Grid>
-            </Grid>
+            {
+                current ? (
+                    <>
+                        <Typography variant='h5'
+                            sx={{ mb: '0.5rem', fontWeight: '600' }}
+                            align='center'
+                            color={'primary'}
+                        >
+                            Update <span style={{ color: `${colorSecondary}` }}>OR</span> Delete
+                        </Typography>
+                        <Typography
+                            align='center'
+                            sx={{ mb: '2rem' }}
+                            variant='body2'
+                        >
+                            Your url is not working!<br />Feel free to update as you want
+                        </Typography>
+                        <Grid container rowGap={'1rem'}
+                            sx={{
+                                borderRadius: { sm: '4px' },
+                                p: { xs: '1rem', sm: '2rem' },
+                                background: '#1f2936'
+                            }}
+                        >
+                            <Grid item xs={12}>
+                                <Stack direction={'row'} alignItems={'center'} gap={'0.5rem'}>
+                                    <Typography>{current?.shortUrl}</Typography>
+                                    <GoLinkExternal
+                                        size={14}
+                                        style={{ cursor: 'pointer', color: `${colorSecondary}` }}
+                                        onClick={() => handleOpenUrl(current.originalUrl, currentId)}
+                                    />
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {
+                                    isInEditMode ? (
+                                        <TextField
+                                            autoFocus
+                                            value={longUrl}
+                                            fullWidth
+                                            variant='standard'
+                                            onChange={handleUrlChange}
+                                            sx={{
+                                                "& .MuiInputBase-root": {
+                                                    color: '#d8dbdf'
+                                                },
+                                                '&:focus-within fieldset, &:focus-visible fieldset': {
+                                                    border: 'none !important',
+                                                },
+                                                // background: '#374150',
+                                                borderRadius: '8px'
+                                            }}
+                                            inputProps={{
+                                                autoComplete: 'off',
+                                            }}
+                                        />
+                                    ) : (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: '2',
+                                                WebkitBoxOrient: 'vertical',
+                                            }}
+                                        >{current?.originalUrl}
+                                        </Typography>
+                                    )
+                                }
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body2">{current?.clicked} times clicked</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body2">Created At:<br /> {moment(current?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {
+                                    isInEditMode ? (
+                                        <Box>
+                                            <Button
+                                                color="secondary"
+                                                variant="contained"
+                                                sx={{ mr: '1rem' }}
+                                                onClick={updateUrl}
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                color="error"
+                                                variant="contained"
+                                                onClick={() => setIsInEditMode(false)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </Box>
+                                    ) : (
+                                        <Box>
+                                            <Button
+                                                endIcon={<EditIcon fontSize="small" />}
+                                                color="secondary"
+                                                variant="contained"
+                                                sx={{ mr: '1rem' }}
+                                                onClick={() => setIsInEditMode(true)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                color="error"
+                                                variant="contained"
+                                                endIcon={<DeleteIcon />}
+                                                onClick={handleOpenDialog}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    )
+                                }
+                            </Grid>
+                        </Grid>
+                    </>
+                ) : (
+                    <Typography align='center'>No data found!</Typography>
+                )
+            }
 
             {/* Delete Confirmation Dialog */}
             <Dialog
