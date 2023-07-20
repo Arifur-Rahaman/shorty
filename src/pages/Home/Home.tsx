@@ -92,7 +92,7 @@ function Home() {
           display: 'block',
           fontWeight: 400,
           fontSize: '0.85rem',
-          mb: '3rem'
+          mb: '2rem'
         }}
       >
         Copy your long boring url. Paste it below. Then you got it, right?
