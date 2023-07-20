@@ -2,6 +2,7 @@ import { Typography, Container, AppBar, Toolbar, Button, Box, Stack } from '@mui
 import { useTheme } from '@mui/material/styles';
 import { BiCollapse, BiLogoFacebook, BiLogoTwitter, BiCopyright } from "react-icons/bi";
 import { Link, useNavigate } from 'react-router-dom';
+import MobileDrawer from '../../components/MobileDrawer/MobileDrawer';
 
 interface Props {
     children: JSX.Element[] | JSX.Element
@@ -25,8 +26,8 @@ function MainLayout({ children }: Props) {
             <Box>
                 {/* --------Header Start------- */}
                 <AppBar position="static" elevation={0} sx={{ background: 'transparent', mb: { xs: '2rem', sm: '5rem' } }}>
-                    <Toolbar disableGutters={true} sx={{gap:'2rem'}}>
-                        <Link to={'/'} style={{textDecoration:'none', flexGrow:1 }}>
+                    <Toolbar disableGutters={true} sx={{justifyContent:'space-between' }}>
+                        <Link to={'/'} style={{ textDecoration: 'none'}}>
                             <Stack direction={'row'} alignItems={'center'}>
                                 <BiCollapse size={36} style={{ marginRight: '0.5rem', color: `${colorPrimary}` }} />
                                 <Typography color={'secondary'} variant="h6" component="div">
@@ -34,21 +35,27 @@ function MainLayout({ children }: Props) {
                                 </Typography>
                             </Stack>
                         </Link>
-                        <Button
-                            onClick={() => navigate('/')}
-                            color="secondary"
-                            sx={{
-                                display:{xs:'none', sm:'block'}
-                            }}
-                        >
-                            Home
-                        </Button>
-                        <Button
-                            onClick={() => navigate('/urls')}
-                            color="secondary"
-                        >
-                            All links
-                        </Button>
+                        <Stack direction={'row'} alignItems={'center'} gap={'2rem'}>
+                            <Button
+                                onClick={() => navigate('/')}
+                                color="secondary"
+                                sx={{
+                                    display: { xs: 'none', sm: 'block' }
+                                }}
+                            >
+                                Home
+                            </Button>
+                            <Button
+                                onClick={() => navigate('/urls')}
+                                color="secondary"
+                                sx={{
+                                    display: { xs: 'none', sm: 'block' }
+                                }}
+                            >
+                                All links
+                            </Button>
+                            <MobileDrawer/>
+                        </Stack>
                     </Toolbar>
                 </AppBar>
                 {/* --------Header End------- */}
