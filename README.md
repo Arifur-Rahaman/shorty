@@ -15,6 +15,11 @@ Shortly is a web application that provides a unique short URL for a long URL and
 * Nano ID
 * React Icons
 * React-Toastify
+  
+### Design Inspiration
+[www.behance.net](https://www.behance.net/gallery/161798075/Shorty-URL-Shortener-Using-Vue-Laravel?tracking_source=search_projects|URL+shortener)
+
+
 
 
 
