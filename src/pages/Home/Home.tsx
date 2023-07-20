@@ -69,7 +69,7 @@ function Home() {
     const newElement = {
       id: newNanoId,
       originalUrl: urlText,
-      shortUrl: `shortly.com/${newNanoId}`,
+      shortUrl: `www.shortly.com/${newNanoId}`,
       clicked: 0,
       createdAt: moment()
     }

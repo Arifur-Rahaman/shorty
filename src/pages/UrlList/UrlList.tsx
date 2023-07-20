@@ -12,6 +12,7 @@ import { GoLinkExternal } from "react-icons/go";
 import moment from 'moment';
 import { AiOutlineEye } from "react-icons/ai";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,15 +39,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function UrlList() {
   const [store, setStore] = useLocalStroge('urls', [])
   const theme = useTheme()
+  const navigate = useNavigate()
   const colorSecondary = theme.palette.secondary.main
 
   /*Handle click on open url */
-  const handleOpenUrl = (url: string, id: string)=>{
-    setStore(store.map((element:any)=>element.id === id?{...element, clicked: element.clicked+1}: element))
+  const handleOpenUrl = (url: string, id: string) => {
+    setStore(store.map((element: any) => element.id === id ? { ...element, clicked: element.clicked + 1 } : element))
     window.open(url, "_blank")
   }
+
   return (
     <TableContainer component={Paper} sx={{ background: 'transparent', color: 'white' }}>
+      <Typography variant='h6' sx={{ mb: '1rem', pl: '1rem' }}>Shorted URLs</Typography>
       <Table
         aria-label="customized table"
         sx={{
@@ -84,7 +88,18 @@ function UrlList() {
                   />
                 </Stack>
               </StyledTableCell>
-              <StyledTableCell align="left" >{row.originalUrl.slice(0, 50)}</StyledTableCell>
+              <StyledTableCell align="left"
+              >
+                <Typography
+                  sx={{
+                    maxWidth: 200, // percentage also works
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                  }}
+                >{row.originalUrl}
+                </Typography>
+              </StyledTableCell>
               <StyledTableCell align="left">
                 <Stack direction={'row'} alignItems={'center'} gap={'0.5rem'}>
                   <AiOutlineEye size={17} />
@@ -104,7 +119,15 @@ function UrlList() {
                   >
                     Open
                   </Button>
-                  <Button variant='contained' color='secondary' size='small' fullWidth={true}>Details</Button>
+                  <Button
+                    variant='contained'
+                    color='secondary'
+                    onClick={() => navigate(`${row.id}`)}
+                    size='small'
+                    fullWidth={true}
+                  >
+                    Details
+                  </Button>
                 </Stack>
               </StyledTableCell>
             </StyledTableRow>

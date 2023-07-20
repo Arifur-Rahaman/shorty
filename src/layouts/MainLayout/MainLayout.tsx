@@ -37,6 +37,9 @@ function MainLayout({ children }: Props) {
                         <Button
                             onClick={() => navigate('/')}
                             color="secondary"
+                            sx={{
+                                display:{xs:'none', sm:'block'}
+                            }}
                         >
                             Home
                         </Button>
